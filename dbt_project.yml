@@ -1,6 +1,9 @@
 name: dbt_test
 profile: "dbt-test"
 
+vars:
+ snowflake_database: "COUNTRY"
+
 version: '1.0.0'
 config-version: 2
 
