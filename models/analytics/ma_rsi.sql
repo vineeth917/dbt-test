@@ -54,13 +54,18 @@ rsi as (
     symbol,
     ma_20,
     ma_50,
-    round(100 - (100 / (1 + (sum(gain) over w / nullif(sum(loss) over w,0)))), 2) as rsi_14
+    round(100 - (100 / (1 + (
+      sum(gain) over (
+        partition by symbol
+        order by date
+        rows between 13 preceding and current row
+      ) / nullif(sum(loss) over (
+        partition by symbol
+        order by date
+        rows between 13 preceding and current row
+      ), 0)
+    ))), 2) as rsi_14
   from rsi_calc
-  window w as (
-    partition by symbol
-    order by date
-    rows between 13 preceding and current row
-  )
 
 )
 
