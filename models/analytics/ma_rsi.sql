@@ -49,9 +49,13 @@ rsi as (
       100 - (100 / (
         1 + (
           sum(gain) over (
-            partition by symbol order by date rows between 13 preceding and current row
+            partition by symbol
+            order by date
+            rows between 13 preceding and current row
           ) / nullif(sum(loss) over (
-            partition by symbol order by date rows between 13 preceding and current row
+            partition by symbol
+            order by date
+            rows between 13 preceding and current row
           ), 0)
         )
       )),
