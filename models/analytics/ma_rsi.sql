@@ -33,9 +33,18 @@ rsi_calc as (
     close,
     ma_20,
     ma_50,
-    close - lag(close) over (partition by symbol order by date) as change,
-    greatest(close - lag(close) over (partition by symbol order by date), 0) as gain,
-    greatest(lag(close) over (partition by symbol order by date) - close, 0) as loss
+    close - lag(close) over (
+      partition by symbol
+      order by date
+    ) as change,
+    greatest(close - lag(close) over (
+      partition by symbol
+      order by date
+    ), 0) as gain,
+    greatest(lag(close) over (
+      partition by symbol
+      order by date
+    ) - close, 0) as loss
   from ma
 ),
 
@@ -52,11 +61,12 @@ rsi as (
             partition by symbol
             order by date
             rows between 13 preceding and current row
-          ) / nullif(sum(loss) over (
-            partition by symbol
-            order by date
-            rows between 13 preceding and current row
-          ), 0)
+          ) / nullif(
+            sum(loss) over (
+              partition by symbol
+              order by date
+              rows between 13 preceding and current row
+            ), 0)
         )
       )),
       2
