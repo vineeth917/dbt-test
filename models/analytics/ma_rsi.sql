@@ -48,6 +48,25 @@ rsi_calc as (
   from ma
 ),
 
+rsi_windowed as (
+  select
+    date,
+    symbol,
+    ma_20,
+    ma_50,
+    sum(gain) over (
+      partition by symbol
+      order by date
+      rows between 13 preceding and current row
+    ) as total_gain,
+    sum(loss) over (
+      partition by symbol
+      order by date
+      rows between 13 preceding and current row
+    ) as total_loss
+  from rsi_calc
+),
+
 rsi as (
   select
     date,
@@ -55,23 +74,10 @@ rsi as (
     ma_20,
     ma_50,
     round(
-      100 - (100 / (
-        1 + (
-          sum(gain) over (
-            partition by symbol
-            order by date
-            rows between 13 preceding and current row
-          ) / nullif(
-            sum(loss) over (
-              partition by symbol
-              order by date
-              rows between 13 preceding and current row
-            ), 0)
-        )
-      )),
+      100 - (100 / (1 + (total_gain / nullif(total_loss, 0)))),
       2
     ) as rsi_14
-  from rsi_calc
+  from rsi_windowed
 )
 
 select
