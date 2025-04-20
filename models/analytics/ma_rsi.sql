@@ -87,4 +87,5 @@ select
   ma_50,
   rsi_14
 from rsi
+where rsi_14 is not null
 order by symbol, date
