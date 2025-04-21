@@ -1,0 +1,15 @@
+version: 2
+
+snapshots:
+  - name: stock_summary_snapshot
+    description: "Snapshot to track changes in stock_summary table over time"
+    columns:
+      - name: symbol
+        tests: [not_null]
+      - name: avg_rsi
+      - name: avg_ma_20
+      - name: avg_ma_50
+      - name: first_date
+      - name: last_date
+      - name: dbt_valid_from
+      - name: dbt_valid_to
