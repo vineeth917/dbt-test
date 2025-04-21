@@ -1,25 +1,28 @@
 {{ config(materialized='table') }}
 
-with price_changes as (
+with rsi_values as (
     select 
         symbol,
         date,
-        close,
-        lag(close) over (partition by symbol order by date) as prev_close,
         rsi_14,
+        lag(rsi_14) over (partition by symbol order by date) as prev_rsi,
         current_timestamp() as load_timestamp
     from {{ ref('ma_rsi') }}
 ),
 
-returns as (
+rsi_changes as (
     select 
         symbol,
         rsi_14,
-        case when prev_close != 0 then round((close - prev_close)/prev_close * 100, 2) else null end as price_change_pct,
+        case 
+            when prev_rsi != 0 then round((rsi_14 - prev_rsi) / prev_rsi * 100, 2)
+            else null 
+        end as rsi_change_pct,
         load_timestamp
-    from price_changes
+    from rsi_values
 )
 
-select * from returns
+select * from rsi_changes
+
 
 
