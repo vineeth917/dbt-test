@@ -14,4 +14,4 @@ with stats as (
     group by symbol
 )
 
-select * from stats;
+select * from stats
