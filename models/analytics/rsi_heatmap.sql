@@ -9,4 +9,4 @@ with rsi_data as (
     from {{ ref('ma_rsi') }}
 )
 
-select * from rsi_data;
+select * from rsi_data

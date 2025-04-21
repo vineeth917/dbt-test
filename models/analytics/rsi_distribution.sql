@@ -20,4 +20,4 @@ returns as (
     from price_changes
 )
 
-select * from returns;
+select * from returns
