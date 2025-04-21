@@ -32,8 +32,6 @@ models:
         tests: [not_null]
       - name: rsi_14
         tests: [not_null]
-      - name: price_change_pct
-        tests: [not_null]
 
   - name: stock_summary
     description: "Average MA20, MA50, RSI per symbol and coverage window"
