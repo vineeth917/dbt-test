@@ -13,12 +13,10 @@ with price_changes as (
 
 returns as (
     select 
+        select 
         symbol,
         rsi_14,
-        case 
-            when prev_close != 0 then round(("close" - prev_close) / prev_close * 100, 2)
-            else null 
-        end as price_change_pct,
+        case when prev_close != 0 then round(({{ adapter.quote('close') }} - prev_close)/prev_close * 100, 2) else null end as price_change_pct,
         load_timestamp
     from price_changes
 )
