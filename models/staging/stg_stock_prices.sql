@@ -7,7 +7,7 @@ with raw as (
     close::float  as close,
     volume::bigint as volume,
     symbol
-  from {{ source('raw', 'stock_prices') }}
+  from {{ source('raw', 'stock_prices2') }}
 )
 
 select
