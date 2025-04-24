@@ -5,7 +5,7 @@ sources:
     database: "{{ var('snowflake_database') }}"
     schema: raw
     tables:
-      - name: stock_prices
+      - name: stock_prices2
 
 models:
   - name: stg_stock_prices
